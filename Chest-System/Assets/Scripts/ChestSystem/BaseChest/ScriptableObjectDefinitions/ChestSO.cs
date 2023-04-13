@@ -29,5 +29,10 @@ namespace ChestSystem.BaseChest
         public int maxCoins;
         public int minGems;
         public int maxGems;
+
+        public int RandomNumber(int min, int max)
+        {
+            return Random.Range(min, max);
+        }
     }
 }

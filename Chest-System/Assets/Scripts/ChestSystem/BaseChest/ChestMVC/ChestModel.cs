@@ -1,40 +1,41 @@
-using UnityEngine;
 
 namespace ChestSystem.BaseChest
 {
     public class ChestModel
     {
+        public float UnlockTimeInSecond { get; }
+        public float UnlockTimeInMinute { get; }
 
-        // chestModel takes input data from chestScriptable object
-        public float UnlockTimeInSecond { get;}
-        public int UnlockTimeInMinute 
-        { 
-            get 
-            {
-                return (int)UnlockTimeInSecond / 60; 
-            }
+        public ChestType ChestType { get; }
+        public string ChestName { get; }
 
-            set
-            {
-                // 
-            }
-        }
-
-        private int minCoins;
-        private int maxCoins;
-        private int minGems;
-        private int maxGems;
+        private int coins;
+        private int gems;
 
         public int Coins
         {
             get
             {
-                return Random.Range(minCoins, maxCoins);
+                return coins;
             }
         }
 
-        public ChestModel(ChestSO chestSO)
+        public int Gems
         {
+            get
+            {
+                return gems;
+            }
+        }
+
+        public ChestModel(BaseChest chestSO)
+        {
+            ChestName = chestSO.ChestName;
+            ChestType = chestSO.chestType;
+            coins = chestSO.RandomNumber(chestSO.minCoins, chestSO.maxCoins);
+            gems = chestSO.RandomNumber(chestSO.minGems, chestSO.maxGems);
+            UnlockTimeInSecond = chestSO.unlockDurationInSeconds;
+            UnlockTimeInMinute = chestSO.unlockDurationInSeconds / 60;
 
         }
     }
