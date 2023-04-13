@@ -5,13 +5,13 @@ namespace ChestSystem.BaseChest
     [CreateAssetMenu(fileName = "ChestScriptableObject", menuName = "MyMenu/ChestsSO")]
     public class ChestSO : ScriptableObject
     {
-        public BaseChest[] allChests;
+        public BaseChestData[] allChests;
     }
 
     //Enums - can be shifted to a separate file for storing all enums if using more
     public enum ChestType
     {
-        None,
+        EmptySlot,
         Common,
         Rare,
         Epic,
@@ -20,8 +20,9 @@ namespace ChestSystem.BaseChest
 
     // Base Class definition
     [System.Serializable]
-    public class BaseChest
+    public class BaseChestData
     {
+        public ChestView chestViewPrefab;
         public string ChestName;
         public ChestType chestType;
         public float unlockDurationInSeconds;
@@ -36,3 +37,4 @@ namespace ChestSystem.BaseChest
         }
     }
 }
+
