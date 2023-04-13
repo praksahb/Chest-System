@@ -28,7 +28,7 @@ namespace ChestSystem.BaseChest
             }
         }
 
-        public ChestModel(BaseChest chestSO)
+        public ChestModel(BaseChestData chestSO)
         {
             ChestName = chestSO.ChestName;
             ChestType = chestSO.chestType;
