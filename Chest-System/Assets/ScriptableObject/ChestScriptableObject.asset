@@ -12,3 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab6c980acc461248a6b246d6d6bb970, type: 3}
   m_Name: ChestScriptableObject
   m_EditorClassIdentifier: 
+  allChests:
+  - ChestName: Common
+    chestType: 1
+    unlockDurationInSeconds: 900
+    minCoins: 100
+    maxCoins: 200
+    minGems: 10
+    maxGems: 20
+  - ChestName: Rare
+    chestType: 2
+    unlockDurationInSeconds: 1800
+    minCoins: 300
+    maxCoins: 500
+    minGems: 20
+    maxGems: 40
+  - ChestName: Epic
+    chestType: 3
+    unlockDurationInSeconds: 3600
+    minCoins: 600
+    maxCoins: 800
+    minGems: 45
+    maxGems: 60
+  - ChestName: Legendary
+    chestType: 4
+    unlockDurationInSeconds: 10800
+    minCoins: 1000
+    maxCoins: 1200
+    minGems: 80
+    maxGems: 100
