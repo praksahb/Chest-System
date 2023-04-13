@@ -1,21 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ChestSystem
+namespace ChestSystem.BaseChest
 {
-    public class ChestController : MonoBehaviour
+    public class ChestController
     {
-        // Start is called before the first frame update
-        void Start()
+        public ChestController(ChestModel chestModel, ChestView chestView)
         {
-        
+            ChestModel = chestModel;
+            ChestView = Object.Instantiate(chestView);
+            ChestView.ChestController = this;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public ChestModel ChestModel { get; }
+        public ChestView ChestView { get; }
     }
 }

@@ -13,28 +13,40 @@ MonoBehaviour:
   m_Name: ChestScriptableObject
   m_EditorClassIdentifier: 
   allChests:
-  - ChestName: Common
+  - chestViewPrefab: {fileID: -525668133091519872, guid: dd1d293363e878b42ba5efd59eafaac2, type: 3}
+    ChestName: Empty Slot
+    chestType: 0
+    unlockDurationInSeconds: 0
+    minCoins: 0
+    maxCoins: 0
+    minGems: 0
+    maxGems: 0
+  - chestViewPrefab: {fileID: 3251659486737355774, guid: a932bb85b175e314c9636c434337c507, type: 3}
+    ChestName: Common
     chestType: 1
     unlockDurationInSeconds: 900
     minCoins: 100
     maxCoins: 200
     minGems: 10
     maxGems: 20
-  - ChestName: Rare
+  - chestViewPrefab: {fileID: 1217242291221133144, guid: 174e418a611fa56469947a228e080511, type: 3}
+    ChestName: Rare
     chestType: 2
     unlockDurationInSeconds: 1800
     minCoins: 300
     maxCoins: 500
     minGems: 20
     maxGems: 40
-  - ChestName: Epic
+  - chestViewPrefab: {fileID: 8839036972291363686, guid: 23779bf761de636469c4492c64020010, type: 3}
+    ChestName: Epic
     chestType: 3
     unlockDurationInSeconds: 3600
     minCoins: 600
     maxCoins: 800
     minGems: 45
     maxGems: 60
-  - ChestName: Legendary
+  - chestViewPrefab: {fileID: 6474232922797597831, guid: 89a99edbef9ef9c44b37a774b0547a7b, type: 3}
+    ChestName: Legendary
     chestType: 4
     unlockDurationInSeconds: 10800
     minCoins: 1000
