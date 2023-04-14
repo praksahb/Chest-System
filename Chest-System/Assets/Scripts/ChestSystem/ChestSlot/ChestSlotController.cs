@@ -1,4 +1,5 @@
 using ChestSystem.BaseChest;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace ChestSystem.ChestSlot
     {
         private GameObject chestSlot;
         private List<ChestController> chestSlotItems = new List<ChestController>();
+
+        private int chestSlotIndex;
 
         public ChestSlotController(GameObject chestSlot)
         {
@@ -19,34 +22,47 @@ namespace ChestSystem.ChestSlot
             this.chestSlot = chestSlot;
         }
 
-        public void AddEmptySlot(ChestSO chestSO)
+        public void AddEmptySlot(BaseChestData emptySO)
         {
-            BaseChestData emptySlotSO = chestSO.allChests[(int)ChestType.EmptySlot];
-            ChestModel chestModel = new ChestModel(emptySlotSO);
-            ChestController chestController = new ChestController(chestModel, emptySlotSO.chestViewPrefab);
-
-            chestController.ChestView.transform.SetParent(chestSlot.transform);
-            chestSlotItems.Add(chestController);
+            chestSlotItems.Add(CreateChestSetParent(emptySO));
         }
 
-        public void AddEmptySlot2(BaseChestData emptySO)
+        public void CreateChest(BaseChestData chestSO)
         {
-            ChestModel chestModel = new ChestModel(emptySO);
-            ChestController chestController = new ChestController(chestModel, emptySO.chestViewPrefab);
-            chestController.ChestView.transform.SetParent(chestSlot.transform);
-            chestSlotItems.Add(chestController);
-        }
-
-        public void ReplaceBoxObject(int index, ChestController newObject)
-        {
-            if (index >= 0 && index < chestSlotItems.Count)
+            for(int i = 0; i < chestSlotItems.Count; i++)
             {
-                ChestController oldObject = chestSlotItems[index];
-                newObject.ChestView.transform.SetParent(chestSlot.transform);
-                newObject.ChestView.transform.SetSiblingIndex(oldObject.ChestView.transform.GetSiblingIndex());
-                Object.Destroy(oldObject.ChestView);
-                chestSlotItems[index] = newObject;
+                if (chestSlotItems[i].ChestModel.ChestType == ChestType.EmptySlot)
+                {
+                    ChestController oldChest = chestSlotItems[i];
+                    ChestController chestController = CreateChestSetParent(chestSO);
+                    chestController.ChestView.transform.SetSiblingIndex(oldChest.ChestView.transform.GetSiblingIndex());
+                    //oldChest.ChestView.DestroySelf();
+                    UnityEngine.Object.Destroy(oldChest.ChestView.gameObject);
+                    chestSlotItems[i] = chestController;
+                    return;
+                }
             }
+            //no empty slot in chestSlots - if line can reach here.
+            Debug.LogError("It reached");
         }
+        private ChestController CreateChestSetParent(BaseChestData chestSO)
+        {
+            ChestModel chestModel = new ChestModel(chestSO);
+            ChestController chestController = new ChestController(chestModel, chestSO.chestViewPrefab);
+            chestController.ChestView.transform.SetParent(chestSlot.transform);
+            return chestController;
+        }
+
+        //public void ReplaceSlot(int index, ChestController newObject)
+        //{
+        //    if (index >= 0 && index < chestSlotItems.Count)
+        //    {
+        //        ChestController oldObject = chestSlotItems[index];
+        //        newObject.ChestView.transform.SetParent(chestSlot.transform);
+        //        newObject.ChestView.transform.SetSiblingIndex(oldObject.ChestView.transform.GetSiblingIndex());
+        //        UnityEngine.Object.Destroy(oldObject.ChestView);
+        //        chestSlotItems[index] = newObject;
+        //    }
+        //}
     }
 }
