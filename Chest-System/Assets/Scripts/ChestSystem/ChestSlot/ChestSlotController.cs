@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ChestSystem.ChestSlot
 {
-
     public class ChestSlotController
     {
         private GameObject chestSlot;
