@@ -9,31 +9,15 @@ namespace ChestSystem.BaseChest
         public ChestType ChestType { get; }
         public string ChestName { get; }
 
-        private int coins;
-        private int gems;
-
-        public int Coins
-        {
-            get
-            {
-                return coins;
-            }
-        }
-
-        public int Gems
-        {
-            get
-            {
-                return gems;
-            }
-        }
+        public int Coins { get; }
+        public int Gems { get; }
 
         public ChestModel(BaseChestData chestSO)
         {
             ChestName = chestSO.ChestName;
             ChestType = chestSO.chestType;
-            coins = chestSO.RandomNumber(chestSO.minCoins, chestSO.maxCoins);
-            gems = chestSO.RandomNumber(chestSO.minGems, chestSO.maxGems);
+            Coins = chestSO.RandomNumber(chestSO.minCoins, chestSO.maxCoins);
+            Gems = chestSO.RandomNumber(chestSO.minGems, chestSO.maxGems);
             UnlockTimeInSecond = chestSO.unlockDurationInSeconds;
             UnlockTimeInMinute = chestSO.unlockDurationInSeconds / 60;
 
