@@ -18,5 +18,10 @@ namespace ChestSystem.BaseChest
             }
         }
 
+        //public void DestroySelf()
+        //{
+        //    GameObject.Destroy(this.gameObject);
+        //}
+
     }
 }
