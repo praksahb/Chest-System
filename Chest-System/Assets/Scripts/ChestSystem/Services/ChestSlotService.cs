@@ -64,7 +64,7 @@ namespace ChestSystem
         {
             if (chestSlotFilledCount == chestSlotItemsCount)
             {
-                // make the SlotFullPanel active
+                // make the LockedChestPanel active
                 Debug.Log("Slot is full");
                 OpenSlotsFullPanel?.Invoke();
                 return;
@@ -73,8 +73,8 @@ namespace ChestSystem
             chestSlotFilledCount++;
         }
 
-
-        public Action OpenLockedScreenPanel;
+        // passing unlock time in minutes directly
+        public Action<float> OpenLockedScreenPanel;
 
     }
 }
