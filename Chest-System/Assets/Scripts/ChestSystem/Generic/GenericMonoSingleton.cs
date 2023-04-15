@@ -12,7 +12,7 @@ namespace ChestSystem
             if (Instance == null)
             {
                 instance = (T)this;
-                //DontDestroyOnLoad(this as T);
+                DontDestroyOnLoad(this as T);
                 // will only work for root gameobjects.
             }
             else

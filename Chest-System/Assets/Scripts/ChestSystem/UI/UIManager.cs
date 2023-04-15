@@ -23,18 +23,6 @@ namespace ChestSystem.UI
             ChangeGemValue();
         }
 
-        private void ChangeCoinValue()
-        {
-            int coins = ChestSlotService.Instance.Coins;
-            coinCount.SetText("Coins: {0}", coins);
-        }
-
-        private void ChangeGemValue()
-        {
-            int gems = ChestSlotService.Instance.Gems;
-            gemCount.SetText("Coins: {0}", gems);
-        }
-
         private void OnEnable()
         {
             EnableChild(closePanel);
@@ -50,6 +38,18 @@ namespace ChestSystem.UI
             ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
             ChestSlotService.Instance.OpenSlotsFullPanel -= SetActiveSlotFull;
             closePanelButton.onClick.RemoveListener(CloseParentPanel);
+        }
+
+        private void ChangeCoinValue()
+        {
+            int coins = ChestSlotService.Instance.Coins;
+            coinCount.SetText("Coins: {0}", coins);
+        }
+
+        private void ChangeGemValue()
+        {
+            int gems = ChestSlotService.Instance.Gems;
+            gemCount.SetText("Coins: {0}", gems);
         }
 
         private void DisableAllChildrenExcept(GameObject parentObj, GameObject childToKeepActive)
