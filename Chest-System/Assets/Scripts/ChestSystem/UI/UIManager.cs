@@ -18,6 +18,7 @@ namespace ChestSystem.UI
 
         private void Awake()
         {
+
             closePanelButton = closePanel.GetComponentInChildren<Button>();
             ChangeCoinValue();
             ChangeGemValue();
@@ -32,7 +33,6 @@ namespace ChestSystem.UI
             ChestSlotService.Instance.OpenLockedScreenPanel += SetActiveLockedChestScreen;
             closePanelButton.onClick.AddListener(CloseParentPanel);
         }
-
         private void OnDisable()
         {
             ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
@@ -72,12 +72,16 @@ namespace ChestSystem.UI
 
         private void SetActiveSlotFull()
         {
+            // first close prev panel if any
+            CloseParentPanel();
             parentPanel.SetActive(true);
             slotFullPanel.SetActive(true);
         }
 
         private void SetActiveLockedChestScreen()
         {
+            // first close prev panel if any
+            CloseParentPanel();
             parentPanel.SetActive(true);
             lockedChestPanel.SetActive(true);
         }
