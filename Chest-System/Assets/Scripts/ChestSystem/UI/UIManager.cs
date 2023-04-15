@@ -23,6 +23,25 @@ namespace ChestSystem.UI
             ChangeGemValue();
         }
 
+        private void OnEnable()
+        {
+            EnableChild(closePanel);
+            ChestSlotService.Instance.OnCoinChange += ChangeCoinValue;
+            ChestSlotService.Instance.OnGemChange += ChangeGemValue;
+            ChestSlotService.Instance.OpenSlotsFullPanel += SetActiveSlotFull;
+            ChestSlotService.Instance.OpenLockedScreenPanel += SetActiveLockedChestScreen;
+            closePanelButton.onClick.AddListener(CloseParentPanel);
+        }
+
+        private void OnDisable()
+        {
+            ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
+            ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
+            ChestSlotService.Instance.OpenSlotsFullPanel -= SetActiveSlotFull;
+            ChestSlotService.Instance.OpenLockedScreenPanel -= SetActiveLockedChestScreen;
+            closePanelButton.onClick.RemoveListener(CloseParentPanel);
+        }
+
         private void ChangeCoinValue()
         {
             int coins = ChestSlotService.Instance.Coins;
@@ -33,23 +52,6 @@ namespace ChestSystem.UI
         {
             int gems = ChestSlotService.Instance.Gems;
             gemCount.SetText("Coins: {0}", gems);
-        }
-
-        private void OnEnable()
-        {
-            EnableChild(closePanel);
-            ChestSlotService.Instance.OnCoinChange += ChangeCoinValue;
-            ChestSlotService.Instance.OnGemChange += ChangeGemValue;
-            ChestSlotService.Instance.OpenSlotsFullPanel += SetActiveSlotFull;
-            closePanelButton.onClick.AddListener(CloseParentPanel);
-        }
-
-        private void OnDisable()
-        {
-            ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
-            ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
-            ChestSlotService.Instance.OpenSlotsFullPanel -= SetActiveSlotFull;
-            closePanelButton.onClick.RemoveListener(CloseParentPanel);
         }
 
         private void DisableAllChildrenExcept(GameObject parentObj, GameObject childToKeepActive)
@@ -72,6 +74,12 @@ namespace ChestSystem.UI
         {
             parentPanel.SetActive(true);
             slotFullPanel.SetActive(true);
+        }
+
+        private void SetActiveLockedChestScreen()
+        {
+            parentPanel.SetActive(true);
+            lockedChestPanel.SetActive(true);
         }
 
         private void CloseParentPanel()

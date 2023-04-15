@@ -48,7 +48,6 @@ namespace ChestSystem
 
         private int chestSlotFilledCount;
 
-
         protected override void Awake()
         {
             base.Awake();
@@ -59,7 +58,7 @@ namespace ChestSystem
         {
             chestSlotsController = new ChestSlotsController(chestSlot, chestSlotItemsCount, chestSO);
         }
-    
+
         public Action OpenSlotsFullPanel;
         private void OnAddChestButtonClick()
         {
@@ -74,6 +73,8 @@ namespace ChestSystem
             chestSlotFilledCount++;
         }
 
+
+        public Action OpenLockedScreenPanel;
 
     }
 }
