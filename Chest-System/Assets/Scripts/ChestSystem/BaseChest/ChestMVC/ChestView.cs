@@ -19,7 +19,6 @@ namespace ChestSystem.BaseChest
             }
         }
 
-
         private void Awake()
         {
             chestButton = GetComponent<Button>();
@@ -33,6 +32,7 @@ namespace ChestSystem.BaseChest
         private void OnButtonClicked()
         {
             Debug.Log("Click click.");
+            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke();
         }
     }
 }

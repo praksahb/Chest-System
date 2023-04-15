@@ -52,17 +52,5 @@ namespace ChestSystem.ChestSlot
             chestController.ChestView.transform.SetParent(chestSlot.transform);
             return chestController;
         }
-
-        //public void ReplaceSlot(int index, ChestController newObject)
-        //{
-        //    if (index >= 0 && index < chestSlotItems.Count)
-        //    {
-        //        ChestController oldObject = chestSlotItems[index];
-        //        newObject.ChestView.transform.SetParent(chestSlot.transform);
-        //        newObject.ChestView.transform.SetSiblingIndex(oldObject.ChestView.transform.GetSiblingIndex());
-        //        UnityEngine.Object.Destroy(oldObject.ChestView);
-        //        chestSlotItems[index] = newObject;
-        //    }
-        //}
     }
 }

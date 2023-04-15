@@ -74,5 +74,7 @@ namespace ChestSystem
         }
 
 
+        public Action OpenLockedScreenPanel;
+
     }
 }

@@ -29,6 +29,7 @@ namespace ChestSystem.UI
             ChestSlotService.Instance.OnCoinChange += ChangeCoinValue;
             ChestSlotService.Instance.OnGemChange += ChangeGemValue;
             ChestSlotService.Instance.OpenSlotsFullPanel += SetActiveSlotFull;
+            ChestSlotService.Instance.OpenLockedScreenPanel += SetActiveLockedChestScreen;
             closePanelButton.onClick.AddListener(CloseParentPanel);
         }
 
@@ -37,6 +38,7 @@ namespace ChestSystem.UI
             ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
             ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
             ChestSlotService.Instance.OpenSlotsFullPanel -= SetActiveSlotFull;
+            ChestSlotService.Instance.OpenLockedScreenPanel -= SetActiveLockedChestScreen;
             closePanelButton.onClick.RemoveListener(CloseParentPanel);
         }
 
@@ -72,6 +74,12 @@ namespace ChestSystem.UI
         {
             parentPanel.SetActive(true);
             slotFullPanel.SetActive(true);
+        }
+
+        private void SetActiveLockedChestScreen()
+        {
+            parentPanel.SetActive(true);
+            lockedChestPanel.SetActive(true);
         }
 
         private void CloseParentPanel()
