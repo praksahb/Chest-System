@@ -1,10 +1,31 @@
 
+using System;
+
 namespace ChestSystem.BaseChest
 {
     public class ChestModel
     {
-        public float UnlockTimeInSecond { get; }
-        public float UnlockTimeInMinute { get; }
+        private float unlockTimeInSecond;
+
+        public Action TimeValueChange;
+        public float UnlockTimeInSecond
+        {
+            get { return unlockTimeInSecond; }
+            set
+            {
+                unlockTimeInSecond = value;
+                //can invoke more events here.
+                TimeValueChange?.Invoke();
+            }
+        }
+
+        public float UnlockTimeInMinute
+        {
+            get
+            {
+                return unlockTimeInSecond / 60;
+            }
+        }
 
         public ChestType ChestType { get; }
         public string ChestName { get; }
@@ -18,9 +39,7 @@ namespace ChestSystem.BaseChest
             ChestType = chestSO.chestType;
             Coins = chestSO.RandomNumber(chestSO.minCoins, chestSO.maxCoins);
             Gems = chestSO.RandomNumber(chestSO.minGems, chestSO.maxGems);
-            UnlockTimeInSecond = chestSO.unlockDurationInSeconds;
-            UnlockTimeInMinute = chestSO.unlockDurationInSeconds / 60;
-
+            unlockTimeInSecond = chestSO.unlockDurationInSeconds;
         }
     }
 }

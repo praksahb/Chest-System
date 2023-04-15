@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ChestSystem.UI
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : GenericMonoSingleton<UIManager>
     {
         public GameObject parentPanel;
         public GameObject slotFullPanel;
@@ -16,9 +17,10 @@ namespace ChestSystem.UI
 
         private Button closePanelButton;
 
-        private void Awake()
+        protected override void Awake()
         {
-
+            base.Awake();
+            CloseParentPanel();
             closePanelButton = closePanel.GetComponentInChildren<Button>();
             ChangeCoinValue();
             ChangeGemValue();
@@ -78,17 +80,19 @@ namespace ChestSystem.UI
             slotFullPanel.SetActive(true);
         }
 
-        private void SetActiveLockedChestScreen()
+        public Action<float> UnlockTimeValue;
+        private void SetActiveLockedChestScreen(float unlockTimeInMinutes)
         {
             // first close prev panel if any
             CloseParentPanel();
             parentPanel.SetActive(true);
             lockedChestPanel.SetActive(true);
+            UnlockTimeValue?.Invoke(unlockTimeInMinutes);
         }
 
         private void CloseParentPanel()
         {
-            if(parentPanel.activeInHierarchy == true)
+            if (parentPanel.activeInHierarchy == true)
             {
                 DisableAllChildrenExcept(parentPanel, closePanel);
                 parentPanel.SetActive(false);

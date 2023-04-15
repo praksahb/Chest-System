@@ -31,8 +31,7 @@ namespace ChestSystem.BaseChest
 
         private void OnButtonClicked()
         {
-            Debug.Log("Click click.");
-            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke();
+            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke(chestController.ChestModel.UnlockTimeInMinute);
         }
     }
 }
