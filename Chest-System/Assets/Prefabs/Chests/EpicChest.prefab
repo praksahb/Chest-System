@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 7004166253986725682}
   - component: {fileID: 7004166253986725681}
   - component: {fileID: 8839036972291363686}
+  - component: {fileID: 891114699202759952}
   m_Layer: 5
   m_Name: EpicChest
   m_TagString: Untagged
@@ -268,5 +269,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 251a12909f793294b84815a0e9df15c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &891114699202759952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7004166253986725679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9c6caaf0916634290a54719539d331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
