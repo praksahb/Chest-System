@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 4215753438066048225}
   - component: {fileID: 4215753438066048226}
   - component: {fileID: 6474232922797597831}
+  - component: {fileID: 6039727682880464507}
   m_Layer: 5
   m_Name: LegendaryChest
   m_TagString: Untagged
@@ -268,5 +269,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 251a12909f793294b84815a0e9df15c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6039727682880464507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4215753438066048236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9c6caaf0916634290a54719539d331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

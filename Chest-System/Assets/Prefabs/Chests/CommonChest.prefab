@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3683358914509966940}
   - component: {fileID: 3683358914509966943}
   - component: {fileID: 3251659486737355774}
+  - component: {fileID: 552441715446318453}
   m_Layer: 5
   m_Name: CommonChest
   m_TagString: Untagged
@@ -133,6 +134,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 251a12909f793294b84815a0e9df15c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &552441715446318453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683358914509966913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9c6caaf0916634290a54719539d331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3683358915023494420

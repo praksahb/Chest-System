@@ -1,19 +1,20 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ChestSystem.UI
 {
     public class UIManager : GenericMonoSingleton<UIManager>
     {
-        public GameObject parentPanel;
-        public GameObject slotFullPanel;
-        public GameObject lockedChestPanel;
-        public GameObject rewardPanel;
-        public GameObject closePanel;
+        [SerializeField] private GameObject parentPanel;
+        [SerializeField] private RectTransform slotFullPanel;
+        [SerializeField] private LockedChestPanel lockedChestPanel;
+        [SerializeField] private RewardPanel rewardPanel;
+        [SerializeField] private GameObject closePanel;
 
-        [SerializeField] private TMPro.TextMeshProUGUI coinCount;
-        [SerializeField] private TMPro.TextMeshProUGUI gemCount;
+        [SerializeField] private TextMeshProUGUI coinCount;
+        [SerializeField] private TextMeshProUGUI gemCount;
 
         private Button closePanelButton;
 
@@ -31,16 +32,16 @@ namespace ChestSystem.UI
             EnableChild(closePanel);
             ChestSlotService.Instance.OnCoinChange += ChangeCoinValue;
             ChestSlotService.Instance.OnGemChange += ChangeGemValue;
-            ChestSlotService.Instance.OpenSlotsFullPanel += SetActiveSlotFull;
-            ChestSlotService.Instance.OpenLockedScreenPanel += SetActiveLockedChestScreen;
+            ChestSlotService.Instance.NoEmptySlots += ShowSlotFullPanel;
+            ChestSlotService.Instance.OpenLockedScreenPanel += ShowLockedChestPanel;
             closePanelButton.onClick.AddListener(CloseParentPanel);
         }
         private void OnDisable()
         {
             ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
             ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
-            ChestSlotService.Instance.OpenSlotsFullPanel -= SetActiveSlotFull;
-            ChestSlotService.Instance.OpenLockedScreenPanel -= SetActiveLockedChestScreen;
+            ChestSlotService.Instance.NoEmptySlots -= ShowSlotFullPanel;
+            ChestSlotService.Instance.OpenLockedScreenPanel -= ShowLockedChestPanel;
             closePanelButton.onClick.RemoveListener(CloseParentPanel);
         }
 
@@ -72,31 +73,53 @@ namespace ChestSystem.UI
             child.SetActive(true);
         }
 
-        private void SetActiveSlotFull()
+        private void ShowSlotFullPanel()
         {
             // first close prev panel if any
             CloseParentPanel();
             parentPanel.SetActive(true);
-            slotFullPanel.SetActive(true);
+            slotFullPanel.gameObject.SetActive(true);
         }
 
-        public Action<float> UnlockTimeValue;
-        private void SetActiveLockedChestScreen(float unlockTimeInMinutes)
+        public Action<float, int> UnlockTimeValue;
+        private void ShowLockedChestPanel(float unlockTimeInMinutes, int chestIndex)
         {
             // first close prev panel if any
             CloseParentPanel();
             parentPanel.SetActive(true);
-            lockedChestPanel.SetActive(true);
-            UnlockTimeValue?.Invoke(unlockTimeInMinutes);
+            lockedChestPanel.gameObject.SetActive(true);
+            UnlockTimeValue?.Invoke(unlockTimeInMinutes, chestIndex);
         }
 
-        private void CloseParentPanel()
+        public Action<int> SetReadyText;
+        public Action<int> ClearText;
+        public Action<int, int> GetRewardValues;
+        public void ShowRewardPanel(int coins, int gems)
+        {
+            CloseParentPanel();
+            parentPanel.SetActive(true);
+            rewardPanel.gameObject.SetActive(true);
+            GetRewardValues?.Invoke(coins, gems);
+        }
+
+        public Action<int> OnUnlockImmediateClick;
+        public Action<int> StartTimerForUnlock;
+
+        public void CloseParentPanel()
         {
             if (parentPanel.activeInHierarchy == true)
             {
                 DisableAllChildrenExcept(parentPanel, closePanel);
                 parentPanel.SetActive(false);
             }
+        }
+
+
+        public Action<float, int> TimerValueChange;
+        public void UpdateTimeRemaining(float timeRemaining, int chestIndex)
+        {
+            // update the text of the corresponding TextMeshProUGUI element based on the chestIndex
+            TimerValueChange?.Invoke(timeRemaining, chestIndex);
         }
     }
 }

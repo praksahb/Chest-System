@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace ChestSystem.BaseChest
 {
     public class ChestView : MonoBehaviour
     {
         private ChestController chestController;
-        private Button chestButton;
+
+        public ChestStateManager chestStateManager { get; private set; }
+
         public ChestController ChestController
         {
             get
@@ -21,17 +22,7 @@ namespace ChestSystem.BaseChest
 
         private void Awake()
         {
-            chestButton = GetComponent<Button>();
-            Debug.Log(chestButton);
-            if(chestButton != null)
-            {
-                chestButton.onClick.AddListener(OnButtonClicked);
-            }
-        }
-
-        private void OnButtonClicked()
-        {
-            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke(chestController.ChestModel.UnlockTimeInMinute);
+            chestStateManager = GetComponent<ChestStateManager>();
         }
     }
 }

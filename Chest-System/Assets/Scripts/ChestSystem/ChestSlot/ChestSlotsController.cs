@@ -12,7 +12,7 @@ namespace ChestSystem.ChestSlot
             chestSlotController = new ChestSlotController(chestSlot);
             for (int i = 0; i < chestSlotItemsCount; i++)
             {
-                chestSlotController.AddEmptySlot(chestSO.allChests[(int)ChestType.EmptySlot]);
+                chestSlotController.InitializeEmptySlot(chestSO.allChests[(int)ChestType.EmptySlot], i);
             }
         }
 
@@ -21,6 +21,16 @@ namespace ChestSystem.ChestSlot
         {
             int chestSOIndex = Random.Range((int)ChestType.Common, (int)ChestType.Legendary);
             chestSlotController.CreateChest(chestSO.allChests[chestSOIndex]);
+        }
+
+        public ChestController FindChest(int chestIndex)
+        {
+            return chestSlotController.FindChest(chestIndex);
+        }
+
+        public void ReplaceWithEmptyChest(ChestSO chestSO, int chestIndex)
+        {
+            chestSlotController.ReplaceChest(chestSO.allChests[(int)ChestType.EmptySlot], chestIndex);
         }
     }
 }

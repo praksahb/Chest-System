@@ -7,7 +7,7 @@ namespace ChestSystem.BaseChest
     {
         private float unlockTimeInSecond;
 
-        public Action TimeValueChange;
+        public Action<float, int> TimeValueChange;
         public float UnlockTimeInSecond
         {
             get { return unlockTimeInSecond; }
@@ -15,7 +15,7 @@ namespace ChestSystem.BaseChest
             {
                 unlockTimeInSecond = value;
                 //can invoke more events here.
-                TimeValueChange?.Invoke();
+                TimeValueChange?.Invoke(UnlockTimeInSecond, ChestIndex);
             }
         }
 
@@ -28,13 +28,15 @@ namespace ChestSystem.BaseChest
         }
 
         public ChestType ChestType { get; }
+        public int ChestIndex { get; }
         public string ChestName { get; }
 
         public int Coins { get; }
         public int Gems { get; }
 
-        public ChestModel(BaseChestData chestSO)
+        public ChestModel(BaseChestData chestSO, int index)
         {
+            ChestIndex = index;
             ChestName = chestSO.ChestName;
             ChestType = chestSO.chestType;
             Coins = chestSO.RandomNumber(chestSO.minCoins, chestSO.maxCoins);
