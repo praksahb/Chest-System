@@ -7,11 +7,11 @@ namespace ChestSystem.UI
 {
     public class UIManager : GenericMonoSingleton<UIManager>
     {
-        public GameObject parentPanel;
-        public RectTransform slotFullPanel;
-        public LockedChestPanel lockedChestPanel;
-        public RewardPanel rewardPanel;
-        public GameObject closePanel;
+        [SerializeField] private GameObject parentPanel;
+        [SerializeField] private RectTransform slotFullPanel;
+        [SerializeField] private LockedChestPanel lockedChestPanel;
+        [SerializeField] private RewardPanel rewardPanel;
+        [SerializeField] private GameObject closePanel;
 
         [SerializeField] private TextMeshProUGUI coinCount;
         [SerializeField] private TextMeshProUGUI gemCount;

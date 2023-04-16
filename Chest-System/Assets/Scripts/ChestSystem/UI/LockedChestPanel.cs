@@ -54,10 +54,6 @@ namespace ChestSystem.UI
 
         private void LaunchUnlockImmediatelyEvent()
         {
-            //Debug.Log($"unlockTime: {unlockTimeInMinutes}");
-            //Debug.Log($"unlockGem Amounts: {requiredGems}");
-            //Debug.Log($"current Gem Amount: {currentGems}");
-
             if(requiredGems <= currentGems)
             {
                 // change state of chest to unlocked
@@ -74,7 +70,6 @@ namespace ChestSystem.UI
 
         private void LaunchStartTimerEvent()
         {
-            // start timer event should change state from locked to unlocking
             UIManager.Instance.StartTimerForUnlock?.Invoke(currentChestIndex);
             UIManager.Instance.CloseParentPanel();
 

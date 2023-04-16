@@ -1,7 +1,6 @@
-using ChestSystem.UI;
 using UnityEngine;
 
-namespace ChestSystem
+namespace ChestSystem.UI
 {
     public class RewardPanel : MonoBehaviour
     {

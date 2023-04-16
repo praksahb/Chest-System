@@ -1,10 +1,9 @@
-using ChestSystem.BaseChest;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChestSystem.BaseChest
 {
+
+    // might not be requiring  this state afterall
     public class ChestCollectedState : ChestBaseState
     {
         public override void OnButtonClick(ChestStateManager chest)
@@ -14,7 +13,7 @@ namespace ChestSystem.BaseChest
 
         public override void OnEnterState(ChestStateManager chest)
         {
-            Debug.Log("Boohoo... end of state now.");
+            Debug.Log("end of state now.");
         }
     }
 }

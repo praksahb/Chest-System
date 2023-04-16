@@ -21,7 +21,7 @@ namespace ChestSystem.BaseChest
         {
             float timeLeft = chest.chestView.ChestController.ChestModel.UnlockTimeInSecond;
 
-            WaitForSecondsRealtime waitTime = new WaitForSecondsRealtime(1f);
+            WaitForSecondsRealtime waitTime = new(1f);
             while (timeLeft > 0)
             {
                 timeLeft -= waitTime.waitTime;

@@ -1,9 +1,8 @@
-using ChestSystem.UI;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace ChestSystem
+namespace ChestSystem.UI
 {
     public class ChestSlotsState : MonoBehaviour
     {

@@ -38,15 +38,10 @@ namespace ChestSystem.ChestSlot
             {
                 if (chestSlotItems[i].ChestModel.ChestType == ChestType.EmptySlot)
                 {
-                    ChestController oldChest = chestSlotItems[i];
-                    ChestController chestController = CreateChestSetParent(chestSO, i);
-                    chestController.ChestView.transform.SetSiblingIndex(oldChest.ChestView.transform.GetSiblingIndex());
-                    UnityEngine.Object.Destroy(oldChest.ChestView.gameObject);
-                    chestSlotItems[i] = chestController;
+                    ReplaceChest(chestSO, i);
                     return;
                 }
             }
-            //no empty slot in chestSlots - if line can reach here.
             ChestSlotService.Instance.NoEmptySlots?.Invoke();
         }
 
