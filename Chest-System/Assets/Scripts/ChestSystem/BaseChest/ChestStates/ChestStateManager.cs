@@ -16,7 +16,7 @@ namespace ChestSystem.BaseChest
         public ChestUnlockedState unlockedState = new ChestUnlockedState();
         public ChestCollectedState collectedState = new ChestCollectedState();
 
-
+        private Coroutine startTimerCoroutine;
 
         private void Start()
         {
@@ -31,11 +31,26 @@ namespace ChestSystem.BaseChest
         {
             currentState = state;
             state.OnEnterState(this);
+
+            // If the new state is the unlocking state, start the coroutine
+            if (state is ChestUnlockingState)
+            {
+                if(startTimerCoroutine != null)
+                {
+                    StopCoroutine(startTimerCoroutine);
+                }
+                startTimerCoroutine = StartCoroutine(((ChestUnlockingState)state).UnlockCoroutine(this));
+            }
+            // Otherwise, stop the coroutine if it's currently running
+            else if (startTimerCoroutine != null)
+            {
+                StopCoroutine(startTimerCoroutine);
+                startTimerCoroutine = null;
+            }
         }
 
         private void OnButtonClicked()
         {
-            Debug.Log($"Curent state: {currentState}");
             currentState.OnButtonClick(this);
         }
     }

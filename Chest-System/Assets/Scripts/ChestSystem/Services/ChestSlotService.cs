@@ -11,7 +11,7 @@ namespace ChestSystem
     {
         [SerializeField] private GameObject chestSlot;
         [SerializeField] private Button createChestButton;
-        [SerializeField] private int chestSlotItemsCount;
+        [SerializeField] private int chestSlotMaxCount;
         [SerializeField] private ChestSO chestSO;
         [SerializeField] private int coins;
         [SerializeField] private int gems;
@@ -21,11 +21,28 @@ namespace ChestSystem
             base.Awake();
             createChestButton.onClick.AddListener(OnAddChestButtonClick);
         }
+
+        private ChestSlotsController chestSlotsController;
         private void Start()
         {
-            chestSlotsController = new ChestSlotsController(chestSlot, chestSlotItemsCount, chestSO);
+            chestSlotsController = new ChestSlotsController(chestSlot, chestSlotMaxCount, chestSO);
             UIManager.Instance.OnUnlockImmediateClick += LaunchUnlockOnChestView;
+            UIManager.Instance.StartTimerForUnlock += LaunchStartTimerEvent;
+        }
 
+        private void LaunchStartTimerEvent(int chestIndex)
+        {
+            ChestController chestController = chestSlotsController.FindChest(chestIndex);
+            if(chestController != null)
+            {
+                chestController.ChestView.chestStateManager.SwitchState(chestController.ChestView.chestStateManager.unlockingState);
+                chestController.ChestModel.TimeValueChange += OnTimeValueChange;
+            }
+        }
+
+        private void OnTimeValueChange(float unlockTime, int chestIndex)
+        {
+            UIManager.Instance.UpdateTimeRemaining(unlockTime, chestIndex);
         }
 
         private void LaunchUnlockOnChestView(int chestIndex)
@@ -34,6 +51,7 @@ namespace ChestSystem
             if(chestController != null)
             {
                 chestController.ChestView.chestStateManager.SwitchState(chestController.ChestView.chestStateManager.unlockedState);
+                UIManager.Instance.SetReadyText?.Invoke(chestIndex);
             }
         }
 
@@ -47,7 +65,6 @@ namespace ChestSystem
             set
             {
                 coins = value;
-                // can invoke event here
                 OnCoinChange?.Invoke();
             }
         }
@@ -61,13 +78,10 @@ namespace ChestSystem
             set
             {
                 gems = value;
-                //can invoke event here or
-                //can invoke single event for both coins and gems - not preferred
                 OnGemChange?.Invoke();
             }
         }
 
-        private ChestSlotsController chestSlotsController;
 
 
         public Action NoEmptySlots;
@@ -76,7 +90,7 @@ namespace ChestSystem
             chestSlotsController.CreateChest(chestSO);
         }
 
-        // passing unlock time in minutes directly
+        // called inside unlocked state when button is clicked
         public Action<float, int> OpenLockedScreenPanel;
         public void OnChestUnlock(ChestUnlockData chestUnlockData)
         {
@@ -87,6 +101,7 @@ namespace ChestSystem
             // pass coins and gems value to the reward panel in the UI manager.
             // can use public function or action invoke and subscribed in ui manager to pass the coin and gems value
             UIManager.Instance.ShowRewardPanel(coins, gems);
+            UIManager.Instance.ClearText?.Invoke(chestIndex);
 
             // increase coin and gems value in chestSlotService either here or later in the ui manager upon closing the reward panel
             Coins += coins;

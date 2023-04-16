@@ -7,7 +7,7 @@ namespace ChestSystem.BaseChest
     {
         private float unlockTimeInSecond;
 
-        public Action TimeValueChange;
+        public Action<float, int> TimeValueChange;
         public float UnlockTimeInSecond
         {
             get { return unlockTimeInSecond; }
@@ -15,7 +15,7 @@ namespace ChestSystem.BaseChest
             {
                 unlockTimeInSecond = value;
                 //can invoke more events here.
-                TimeValueChange?.Invoke();
+                TimeValueChange?.Invoke(UnlockTimeInSecond, ChestIndex);
             }
         }
 

@@ -1,6 +1,4 @@
-using ChestSystem.BaseChest;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChestSystem.BaseChest
@@ -9,22 +7,29 @@ namespace ChestSystem.BaseChest
     {
         public override void OnButtonClick(ChestStateManager chest)
         {
-            throw new System.NotImplementedException();
+            float unlockTimeMins = chest.chestView.ChestController.ChestModel.UnlockTimeInMinute;
+            int chestIndex = chest.chestView.ChestController.ChestModel.ChestIndex;
+            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke(unlockTimeMins, chestIndex);
         }
 
         public override void OnEnterState(ChestStateManager chest)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("timer will start now.");
         }
 
-        public override void OnExitState(ChestStateManager chest)
+        public IEnumerator UnlockCoroutine(ChestStateManager chest)
         {
-            throw new System.NotImplementedException();
-        }
+            float timeLeft = chest.chestView.ChestController.ChestModel.UnlockTimeInSecond;
 
-        public override void OnUpdateState(ChestStateManager chest)
-        {
-            throw new System.NotImplementedException();
+            WaitForSecondsRealtime waitTime = new WaitForSecondsRealtime(1f);
+            while (timeLeft > 0)
+            {
+                timeLeft -= waitTime.waitTime;
+                chest.chestView.ChestController.ChestModel.UnlockTimeInSecond = timeLeft;
+
+                yield return waitTime;
+            }
+            chest.SwitchState(chest.unlockedState);
         }
     }
 }

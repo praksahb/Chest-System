@@ -75,6 +75,9 @@ namespace ChestSystem.UI
         private void LaunchStartTimerEvent()
         {
             // start timer event should change state from locked to unlocking
+            UIManager.Instance.StartTimerForUnlock?.Invoke(currentChestIndex);
+            UIManager.Instance.CloseParentPanel();
+
         }
 
     }

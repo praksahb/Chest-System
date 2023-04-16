@@ -91,6 +91,8 @@ namespace ChestSystem.UI
             UnlockTimeValue?.Invoke(unlockTimeInMinutes, chestIndex);
         }
 
+        public Action<int> SetReadyText;
+        public Action<int> ClearText;
         public Action<int, int> GetRewardValues;
         public void ShowRewardPanel(int coins, int gems)
         {
@@ -101,6 +103,7 @@ namespace ChestSystem.UI
         }
 
         public Action<int> OnUnlockImmediateClick;
+        public Action<int> StartTimerForUnlock;
 
         public void CloseParentPanel()
         {
@@ -109,6 +112,14 @@ namespace ChestSystem.UI
                 DisableAllChildrenExcept(parentPanel, closePanel);
                 parentPanel.SetActive(false);
             }
+        }
+
+
+        public Action<float, int> TimerValueChange;
+        public void UpdateTimeRemaining(float timeRemaining, int chestIndex)
+        {
+            // update the text of the corresponding TextMeshProUGUI element based on the chestIndex
+            TimerValueChange?.Invoke(timeRemaining, chestIndex);
         }
     }
 }

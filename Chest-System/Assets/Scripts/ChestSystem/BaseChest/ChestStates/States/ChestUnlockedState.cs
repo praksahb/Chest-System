@@ -19,16 +19,6 @@ namespace ChestSystem.BaseChest
         {
             Debug.Log("This is the unlocked state now");
         }
-
-        public override void OnExitState(ChestStateManager chest)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void OnUpdateState(ChestStateManager chest)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 
     public class ChestUnlockData

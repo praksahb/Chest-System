@@ -8,8 +8,6 @@ namespace ChestSystem.ChestSlot
     {
         private GameObject chestSlot;
         private List<ChestController> chestSlotItems = new List<ChestController>();
-
-
         public ChestSlotController(GameObject chestSlot)
         {
             if (chestSlot == null)
@@ -19,7 +17,6 @@ namespace ChestSystem.ChestSlot
             }
             this.chestSlot = chestSlot;    
         }
-
         //intialization
         public void InitializeEmptySlot(BaseChestData emptySO, int index)
         {

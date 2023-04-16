@@ -18,15 +18,5 @@ namespace ChestSystem.BaseChest
         {
             Debug.Log("The chest has been instantiated in locked state");
         }
-
-        public override void OnExitState(ChestStateManager chest)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void OnUpdateState(ChestStateManager chest)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
