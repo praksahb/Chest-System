@@ -47,9 +47,7 @@ namespace ChestSystem.UI
             if (chestIndex < 0 || chestIndex >= chestSlotsElements.Count) return;
 
             TextMeshProUGUI childText = chestSlotsElements[chestIndex];
-            Debug.Log(timeValue);
-            childText.SetText("{1}:{3}", (int)(timeValue / 60), timeValue % 60);
-
+            childText.SetText("{0}:{1}", (int)(timeValue / 60), timeValue % 60);
         }
 
         private void GetChildElements()

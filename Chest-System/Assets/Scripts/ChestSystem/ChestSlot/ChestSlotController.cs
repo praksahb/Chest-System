@@ -42,7 +42,7 @@ namespace ChestSystem.ChestSlot
                     return;
                 }
             }
-            ChestSlotService.Instance.NoEmptySlots?.Invoke();
+            ChestService.Instance.NoEmptySlots?.Invoke();
         }
 
         public void ReplaceChestByEmpty(BaseChestData emptySO, int chestIndex)
