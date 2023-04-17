@@ -8,7 +8,7 @@ namespace ChestSystem.BaseChest
     public class ChestStateManager : MonoBehaviour
     {
         public ChestView chestView { get; private set; }
-        private ChestBaseState currentState;
+        public ChestBaseState CurrentState { get; private set; }
         private Button chestButton;
 
         public ChestLockedState lockedState = new ChestLockedState();
@@ -22,14 +22,14 @@ namespace ChestSystem.BaseChest
         {
             chestView = GetComponent<ChestView>();
             chestButton = GetComponent<Button>();
-            currentState = lockedState;
-            currentState.OnEnterState(this);
+            CurrentState = lockedState;
+            CurrentState.OnEnterState(this);
             chestButton.onClick.AddListener(OnButtonClicked);
         }
 
         public void SwitchState(ChestBaseState state)
         {
-            currentState = state;
+            CurrentState = state;
             state.OnEnterState(this);
 
             // If the new state is the unlocking state, start the coroutine
@@ -51,7 +51,7 @@ namespace ChestSystem.BaseChest
 
         private void OnButtonClicked()
         {
-            currentState.OnButtonClick(this);
+            CurrentState.OnButtonClick(this);
         }
     }
 }

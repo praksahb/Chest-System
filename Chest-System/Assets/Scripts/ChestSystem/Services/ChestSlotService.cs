@@ -50,6 +50,10 @@ namespace ChestSystem
             ChestController chestController = chestSlotsController.FindChest(chestIndex);
             if(chestController != null)
             {
+                if(chestController.ChestView.chestStateManager.CurrentState is ChestUnlockingState)
+                {
+                    chestController.ChestModel.TimeValueChange -= OnTimeValueChange;
+                }
                 chestController.ChestView.chestStateManager.SwitchState(chestController.ChestView.chestStateManager.unlockedState);
                 UIManager.Instance.SetReadyText?.Invoke(chestIndex);
             }
@@ -87,7 +91,7 @@ namespace ChestSystem
         public Action NoEmptySlots;
         private void OnAddChestButtonClick()
         {
-            chestSlotsController.CreateChest(chestSO);
+            chestSlotsController.CreateRandomChest(chestSO);
         }
 
         // called inside unlocked state when button is clicked

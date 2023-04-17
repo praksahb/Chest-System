@@ -16,21 +16,21 @@ namespace ChestSystem.ChestSlot
             }
         }
 
-        // select a index value from 1-4 and assign chestSO to the createChest function in chestSlotController
-        public void CreateChest(ChestSO chestSO)
+        public void CreateRandomChest(ChestSO chestSO)
         {
-            int chestSOIndex = Random.Range((int)ChestType.Common, (int)ChestType.Legendary);
+            int maxRangeModifier = 1;
+            int chestSOIndex = Random.Range((int)ChestType.Common, (int)ChestType.Legendary + maxRangeModifier);
             chestSlotController.CreateChest(chestSO.allChests[chestSOIndex]);
         }
 
         public ChestController FindChest(int chestIndex)
         {
-            return chestSlotController.FindChest(chestIndex);
+            return chestSlotController.GetChestByIndex(chestIndex);
         }
 
         public void ReplaceWithEmptyChest(ChestSO chestSO, int chestIndex)
         {
-            chestSlotController.ReplaceChest(chestSO.allChests[(int)ChestType.EmptySlot], chestIndex);
+            chestSlotController.ReplaceChestByEmpty(chestSO.allChests[(int)ChestType.EmptySlot], chestIndex);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ChestSystem.ChestSlot
                 Debug.LogError("Chest slot game object is null!");
                 return;
             }
-            this.chestSlot = chestSlot;    
+            this.chestSlot = chestSlot;
         }
         //intialization
         public void InitializeEmptySlot(BaseChestData emptySO, int index)
@@ -23,9 +23,9 @@ namespace ChestSystem.ChestSlot
             chestSlotItems.Add(CreateChestSetParent(emptySO, index));
         }
 
-        public ChestController FindChest(int chestIndex)
+        public ChestController GetChestByIndex(int chestIndex)
         {
-            if(chestIndex < 0 || chestIndex >= chestSlotItems.Count)
+            if (chestIndex < 0 || chestIndex >= chestSlotItems.Count)
             {
                 return null;
             }
@@ -34,18 +34,23 @@ namespace ChestSystem.ChestSlot
 
         public void CreateChest(BaseChestData chestSO)
         {
-            for(int i = 0; i < chestSlotItems.Count; i++)
+            for (int i = 0; i < chestSlotItems.Count; i++)
             {
                 if (chestSlotItems[i].ChestModel.ChestType == ChestType.EmptySlot)
                 {
-                    ReplaceChest(chestSO, i);
+                    ReplaceChestPrivate(chestSO, i);
                     return;
                 }
             }
             ChestSlotService.Instance.NoEmptySlots?.Invoke();
         }
 
-        public void ReplaceChest(BaseChestData chestSO, int chestIndex)
+        public void ReplaceChestByEmpty(BaseChestData emptySO, int chestIndex)
+        {
+            ReplaceChestPrivate(emptySO, chestIndex);
+        }
+
+        private void ReplaceChestPrivate(BaseChestData chestSO, int chestIndex)
         {
             ChestController oldChest = chestSlotItems[chestIndex];
             ChestController chestController = CreateChestSetParent(chestSO, chestIndex);
