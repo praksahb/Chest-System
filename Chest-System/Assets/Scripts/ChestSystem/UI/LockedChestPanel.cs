@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,7 +61,7 @@ namespace ChestSystem.UI
             else
             {
                 // pop up new window saying gems is not enough.
-                Debug.Log("Gems not enough");
+                UIManager.Instance.ShowGemNotEnoughPanel();
             }
         }
 

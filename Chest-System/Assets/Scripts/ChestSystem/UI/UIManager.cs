@@ -12,6 +12,7 @@ namespace ChestSystem.UI
         [SerializeField] private LockedChestPanel lockedChestPanel;
         [SerializeField] private RewardPanel rewardPanel;
         [SerializeField] private GameObject closePanel;
+        [SerializeField] private RectTransform gemNotEnoughPanel;
 
         [SerializeField] private TextMeshProUGUI coinCount;
         [SerializeField] private TextMeshProUGUI gemCount;
@@ -100,6 +101,13 @@ namespace ChestSystem.UI
             parentPanel.SetActive(true);
             rewardPanel.gameObject.SetActive(true);
             GetRewardValues?.Invoke(coins, gems);
+        }
+
+        public void ShowGemNotEnoughPanel()
+        {
+            CloseParentPanel();
+            parentPanel.SetActive(true);
+            gemNotEnoughPanel.gameObject.SetActive(true);
         }
 
         public Action<int> OnUnlockImmediateClick;
