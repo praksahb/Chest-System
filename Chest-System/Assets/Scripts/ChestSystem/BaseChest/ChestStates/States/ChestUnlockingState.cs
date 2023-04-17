@@ -7,9 +7,7 @@ namespace ChestSystem.BaseChest
     {
         public override void OnButtonClick(ChestStateManager chest)
         {
-            float unlockTimeMins = chest.chestView.ChestController.ChestModel.UnlockTimeInMinute;
-            int chestIndex = chest.chestView.ChestController.ChestModel.ChestIndex;
-            ChestSlotService.Instance.OpenLockedScreenPanel?.Invoke(unlockTimeMins, chestIndex);
+            chest.chestView.ChestController.ButtonClickedUnlockingState();
         }
 
         public override void OnEnterState(ChestStateManager chest)
@@ -20,6 +18,7 @@ namespace ChestSystem.BaseChest
         public IEnumerator UnlockCoroutine(ChestStateManager chest)
         {
             float timeLeft = chest.chestView.ChestController.ChestModel.UnlockTimeInSecond;
+            int chestIndex = chest.chestView.ChestController.ChestModel.ChestIndex;
 
             WaitForSecondsRealtime waitTime = new(1f);
             while (timeLeft > 0)
@@ -29,7 +28,7 @@ namespace ChestSystem.BaseChest
 
                 yield return waitTime;
             }
-            chest.SwitchState(chest.unlockedState);
+            ChestService.Instance.UnlockChest(chestIndex);
         }
     }
 }

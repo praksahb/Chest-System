@@ -1,7 +1,7 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace ChestSystem.UI
 {
@@ -12,6 +12,7 @@ namespace ChestSystem.UI
         [SerializeField] private LockedChestPanel lockedChestPanel;
         [SerializeField] private RewardPanel rewardPanel;
         [SerializeField] private GameObject closePanel;
+        [SerializeField] private RectTransform gemNotEnoughPanel;
 
         [SerializeField] private TextMeshProUGUI coinCount;
         [SerializeField] private TextMeshProUGUI gemCount;
@@ -30,30 +31,32 @@ namespace ChestSystem.UI
         private void OnEnable()
         {
             EnableChild(closePanel);
-            ChestSlotService.Instance.OnCoinChange += ChangeCoinValue;
-            ChestSlotService.Instance.OnGemChange += ChangeGemValue;
-            ChestSlotService.Instance.NoEmptySlots += ShowSlotFullPanel;
-            ChestSlotService.Instance.OpenLockedScreenPanel += ShowLockedChestPanel;
+            ChestService.Instance.OnCoinChange += ChangeCoinValue;
+            ChestService.Instance.OnGemChange += ChangeGemValue;
+            ChestService.Instance.NoEmptySlots += ShowSlotFullPanel;
+            ChestService.Instance.OpenLockedScreenPanel += ShowLockedChestPanel;
+            ChestService.Instance.OpenLockedScreenPanelInUnlockingState += ShowLockedChestPanelInUnlockingState;
             closePanelButton.onClick.AddListener(CloseParentPanel);
         }
         private void OnDisable()
         {
-            ChestSlotService.Instance.OnCoinChange -= ChangeCoinValue;
-            ChestSlotService.Instance.OnGemChange -= ChangeGemValue;
-            ChestSlotService.Instance.NoEmptySlots -= ShowSlotFullPanel;
-            ChestSlotService.Instance.OpenLockedScreenPanel -= ShowLockedChestPanel;
+            ChestService.Instance.OnCoinChange -= ChangeCoinValue;
+            ChestService.Instance.OnGemChange -= ChangeGemValue;
+            ChestService.Instance.NoEmptySlots -= ShowSlotFullPanel;
+            ChestService.Instance.OpenLockedScreenPanel -= ShowLockedChestPanel;
+            ChestService.Instance.OpenLockedScreenPanelInUnlockingState -= ShowLockedChestPanelInUnlockingState;
             closePanelButton.onClick.RemoveListener(CloseParentPanel);
         }
 
         private void ChangeCoinValue()
         {
-            int coins = ChestSlotService.Instance.Coins;
+            int coins = ChestService.Instance.Coins;
             coinCount.SetText("Coins: {0}", coins);
         }
 
         private void ChangeGemValue()
         {
-            int gems = ChestSlotService.Instance.Gems;
+            int gems = ChestService.Instance.Gems;
             gemCount.SetText("Coins: {0}", gems);
         }
 
@@ -90,6 +93,17 @@ namespace ChestSystem.UI
             lockedChestPanel.gameObject.SetActive(true);
             UnlockTimeValue?.Invoke(unlockTimeInMinutes, chestIndex);
         }
+        
+        public Action<float, int> UnlockTimeValueInUnlockingState;
+
+        private void ShowLockedChestPanelInUnlockingState(float unlockTimeInMinutes, int chestIndex)
+        {
+            // first close prev panel if any
+            CloseParentPanel();
+            parentPanel.SetActive(true);
+            lockedChestPanel.gameObject.SetActive(true);
+            UnlockTimeValueInUnlockingState?.Invoke(unlockTimeInMinutes, chestIndex);
+        }
 
         public Action<int> SetReadyText;
         public Action<int> ClearText;
@@ -102,8 +116,15 @@ namespace ChestSystem.UI
             GetRewardValues?.Invoke(coins, gems);
         }
 
+        public void ShowGemNotEnoughPanel()
+        {
+            CloseParentPanel();
+            parentPanel.SetActive(true);
+            gemNotEnoughPanel.gameObject.SetActive(true);
+        }
+
         public Action<int> OnUnlockImmediateClick;
-        public Action<int> StartTimerForUnlock;
+        public Action<int> StartTimerClickEvent;
 
         public void CloseParentPanel()
         {

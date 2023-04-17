@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,20 +23,31 @@ namespace ChestSystem.UI
 
         private void OnEnable()
         {
-            currentGems = ChestSlotService.Instance.Gems;
+            currentGems = ChestService.Instance.Gems;
             UIManager.Instance.UnlockTimeValue += UpdateLockedChestInfo;
+            UIManager.Instance.UnlockTimeValueInUnlockingState += UpdateLockedChestInfoInUnlockingState;
             startTimerButton.onClick.AddListener(LaunchStartTimerEvent);
             unlockWithGemsButton.onClick.AddListener(LaunchUnlockImmediatelyEvent);
         }
         private void OnDisable()
         {
             UIManager.Instance.UnlockTimeValue -= UpdateLockedChestInfo;
+            UIManager.Instance.UnlockTimeValueInUnlockingState -= UpdateLockedChestInfoInUnlockingState;
             startTimerButton.onClick.RemoveAllListeners();
             unlockWithGemsButton.onClick.RemoveAllListeners();
         }
 
         private void UpdateLockedChestInfo(float _unlockTime, int chestIndex)
         {
+            startTimerButton.gameObject.SetActive(true);
+            unlockTimeInMinutes = _unlockTime;
+            currentChestIndex = chestIndex;
+            CalculateRequiredGems();
+        }
+
+        private void UpdateLockedChestInfoInUnlockingState(float _unlockTime, int chestIndex)
+        {
+            startTimerButton.gameObject.SetActive(false);
             unlockTimeInMinutes = _unlockTime;
             currentChestIndex = chestIndex;
             CalculateRequiredGems();
@@ -58,21 +66,20 @@ namespace ChestSystem.UI
             {
                 // change state of chest to unlocked
                 UIManager.Instance.OnUnlockImmediateClick?.Invoke(currentChestIndex);
-                ChestSlotService.Instance.Gems -= requiredGems;
+                ChestService.Instance.Gems -= requiredGems;
                 UIManager.Instance.CloseParentPanel();
             } 
             else
             {
                 // pop up new window saying gems is not enough.
-                Debug.Log("Gems not enough");
+                UIManager.Instance.ShowGemNotEnoughPanel();
             }
         }
 
         private void LaunchStartTimerEvent()
         {
-            UIManager.Instance.StartTimerForUnlock?.Invoke(currentChestIndex);
+            UIManager.Instance.StartTimerClickEvent?.Invoke(currentChestIndex);
             UIManager.Instance.CloseParentPanel();
-
         }
 
     }

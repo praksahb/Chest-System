@@ -8,7 +8,7 @@ namespace ChestSystem.BaseChest
         {
             // generate reward and switch to the collected state
             ChestUnlockData chestUnlockData = new ChestUnlockData(chest.chestView.ChestController.ChestModel);
-            ChestSlotService.Instance.OnChestUnlock(chestUnlockData);
+            ChestService.Instance.OnChestUnlock(chestUnlockData);
             chest.SwitchState(chest.collectedState);
         }
 

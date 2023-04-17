@@ -7,11 +7,12 @@ using ChestSystem.UI;
 
 namespace ChestSystem
 {
-    public class ChestSlotService : GenericMonoSingleton<ChestSlotService>
+    public class ChestService : GenericMonoSingleton<ChestService>
     {
         [SerializeField] private GameObject chestSlot;
         [SerializeField] private Button createChestButton;
         [SerializeField] private int chestSlotMaxCount;
+        [SerializeField] private int chestQueueSize;
         [SerializeField] private ChestSO chestSO;
         [SerializeField] private int coins;
         [SerializeField] private int gems;
@@ -25,36 +26,45 @@ namespace ChestSystem
         private ChestSlotsController chestSlotsController;
         private void Start()
         {
-            chestSlotsController = new ChestSlotsController(chestSlot, chestSlotMaxCount, chestSO);
-            UIManager.Instance.OnUnlockImmediateClick += LaunchUnlockOnChestView;
-            UIManager.Instance.StartTimerForUnlock += LaunchStartTimerEvent;
+            chestSlotsController = new ChestSlotsController(chestSlot, chestSlotMaxCount, chestSO, chestQueueSize);
+            UIManager.Instance.OnUnlockImmediateClick += UnlockChest;
+            UIManager.Instance.StartTimerClickEvent += QueueChestForUnlocking;
         }
 
-        private void LaunchStartTimerEvent(int chestIndex)
+        private void OnDestroy()
         {
-            ChestController chestController = chestSlotsController.FindChest(chestIndex);
-            if(chestController != null)
-            {
-                chestController.ChestView.chestStateManager.SwitchState(chestController.ChestView.chestStateManager.unlockingState);
-                chestController.ChestModel.TimeValueChange += OnTimeValueChange;
-            }
+            UIManager.Instance.OnUnlockImmediateClick -= UnlockChest;
+            UIManager.Instance.StartTimerClickEvent -= QueueChestForUnlocking;
         }
 
-        private void OnTimeValueChange(float unlockTime, int chestIndex)
+        //event handler for ChestModel.UnlockTimeInSecond
+        public void CountdownTimer(float unlockTime, int chestIndex)
         {
             UIManager.Instance.UpdateTimeRemaining(unlockTime, chestIndex);
         }
 
-        private void LaunchUnlockOnChestView(int chestIndex)
+        //event handler for button click to start timer
+        private void QueueChestForUnlocking(int chestIndex)
         {
-            ChestController chestController = chestSlotsController.FindChest(chestIndex);
-            if(chestController != null)
+            if (chestQueueSize == chestSlotsController.GetQueueCount())
             {
-                chestController.ChestView.chestStateManager.SwitchState(chestController.ChestView.chestStateManager.unlockedState);
-                UIManager.Instance.SetReadyText?.Invoke(chestIndex);
+                Debug.Log("Queue is full.");
+                return;
             }
+
+            chestSlotsController.QueueChest(chestIndex);
         }
 
+        //event handler for button click to unlock immediately and
+        //public method to handle chest finishing countdown timer
+        public void UnlockChest(int chestIndex)
+        {
+            chestSlotsController.UnlockChest(chestIndex);
+            UIManager.Instance.SetReadyText?.Invoke(chestIndex);
+        }
+
+
+        // coins and gems that are there on user
         public Action OnCoinChange;
         public int Coins
         {
@@ -85,13 +95,18 @@ namespace ChestSystem
 
 
         public Action NoEmptySlots;
+
         private void OnAddChestButtonClick()
         {
-            chestSlotsController.CreateChest(chestSO);
+            chestSlotsController.CreateRandomChest(chestSO);
         }
 
-        // called inside unlocked state when button is clicked
+        // called inside locked state when button is clicked
         public Action<float, int> OpenLockedScreenPanel;
+        // called inside unlocking state when button is clicked
+        public Action<float, int> OpenLockedScreenPanelInUnlockingState;
+
+
         public void OnChestUnlock(ChestUnlockData chestUnlockData)
         {
             int coins = chestUnlockData.Coins;
