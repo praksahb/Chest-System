@@ -74,7 +74,6 @@ namespace ChestSystem
             }
             else
             {
-                Debug.Log("Queue is full.");
                 UIManager.Instance.OnQueueFull?.Invoke();
             }
         }
