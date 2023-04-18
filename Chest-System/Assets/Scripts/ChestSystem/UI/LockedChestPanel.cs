@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ChestSystem.UI
 {
@@ -7,10 +8,11 @@ namespace ChestSystem.UI
     {
         [SerializeField] private Button startTimerButton;
         [SerializeField] private Button unlockWithGemsButton;
+        [SerializeField] private TextMeshProUGUI baseTextLockedPanel;
         [SerializeField] private int divisionValueForGems = 10;
 
 
-        private TMPro.TextMeshProUGUI unlockButtonText;
+        private TextMeshProUGUI unlockButtonText;
         private float unlockTimeInMinutes;
         private int currentGems;
         private int requiredGems;
@@ -18,36 +20,36 @@ namespace ChestSystem.UI
 
         private void Awake()
         {
-            unlockButtonText = unlockWithGemsButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            unlockButtonText = unlockWithGemsButton.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private void OnEnable()
         {
             currentGems = ChestService.Instance.Gems;
-            UIManager.Instance.UnlockTimeValue += UpdateLockedChestInfo;
-            UIManager.Instance.UnlockTimeValueInUnlockingState += UpdateLockedChestInfoInUnlockingState;
-            startTimerButton.onClick.AddListener(LaunchStartTimerEvent);
+            UIManager.Instance.ChestClickedUIEvent += UpdatePanel;
             unlockWithGemsButton.onClick.AddListener(LaunchUnlockImmediatelyEvent);
         }
         private void OnDisable()
         {
-            UIManager.Instance.UnlockTimeValue -= UpdateLockedChestInfo;
-            UIManager.Instance.UnlockTimeValueInUnlockingState -= UpdateLockedChestInfoInUnlockingState;
+            UIManager.Instance.ChestClickedUIEvent -= UpdatePanel;
             startTimerButton.onClick.RemoveAllListeners();
             unlockWithGemsButton.onClick.RemoveAllListeners();
         }
 
-        private void UpdateLockedChestInfo(float _unlockTime, int chestIndex)
+        private void UpdatePanel(float _unlockTime, int chestIndex, ChestCurrentState currentState)
         {
-            startTimerButton.gameObject.SetActive(true);
-            unlockTimeInMinutes = _unlockTime;
-            currentChestIndex = chestIndex;
-            CalculateRequiredGems();
-        }
+            if(currentState == ChestCurrentState.LockedState)
+            {
+                startTimerButton.gameObject.SetActive(true);
+                startTimerButton.onClick.AddListener(LaunchStartTimerEvent);
+                baseTextLockedPanel.SetText("Start timer to open chest or unlock with gems immediately.");
+            }
+            if (currentState == ChestCurrentState.UnlockingState)
+            {
+                startTimerButton.gameObject.SetActive(false);
+                baseTextLockedPanel.SetText("Unlock with gems immediately.");
+            }
 
-        private void UpdateLockedChestInfoInUnlockingState(float _unlockTime, int chestIndex)
-        {
-            startTimerButton.gameObject.SetActive(false);
             unlockTimeInMinutes = _unlockTime;
             currentChestIndex = chestIndex;
             CalculateRequiredGems();
@@ -67,19 +69,19 @@ namespace ChestSystem.UI
                 // change state of chest to unlocked
                 UIManager.Instance.OnUnlockImmediateClick?.Invoke(currentChestIndex);
                 ChestService.Instance.Gems -= requiredGems;
-                UIManager.Instance.CloseParentPanel();
+                UIManager.Instance.CloseAllPanel?.Invoke();
             } 
             else
             {
                 // pop up new window saying gems is not enough.
-                UIManager.Instance.ShowGemNotEnoughPanel();
+                UIManager.Instance.InsufficientGems?.Invoke();
             }
         }
 
         private void LaunchStartTimerEvent()
         {
             UIManager.Instance.StartTimerClickEvent?.Invoke(currentChestIndex);
-            UIManager.Instance.CloseParentPanel();
+            UIManager.Instance.CloseAllPanel?.Invoke();
         }
 
     }

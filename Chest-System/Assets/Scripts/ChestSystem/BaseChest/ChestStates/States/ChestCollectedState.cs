@@ -6,6 +6,8 @@ namespace ChestSystem.BaseChest
     // might not be requiring  this state afterall
     public class ChestCollectedState : ChestBaseState
     {
+        public override ChestCurrentState State { get => ChestCurrentState.None; }
+
         public override void OnButtonClick(ChestStateManager chest)
         {
             throw new System.NotImplementedException();

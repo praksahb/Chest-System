@@ -10,15 +10,15 @@ namespace ChestSystem.UI
 
         private void OnEnable()
         {
-            UIManager.Instance.GetRewardValues += TempFuncName;
+            UIManager.Instance.SendRewardValues += UpdateRewardPanel;
         }
 
         private void OnDisable()
         {
-            UIManager.Instance.GetRewardValues -= TempFuncName;
+            UIManager.Instance.SendRewardValues -= UpdateRewardPanel;
         }
 
-        private void TempFuncName(int coins, int gems)
+        private void UpdateRewardPanel(int coins, int gems)
         {
             coinTextObj.SetText("Coins: {0}", coins);
             gemTextObj.SetText("Gems: {0}", gems);

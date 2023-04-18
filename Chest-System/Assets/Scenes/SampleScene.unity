@@ -1243,6 +1243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startTimerButton: {fileID: 356654949}
   unlockWithGemsButton: {fileID: 1601191093}
+  baseTextLockedPanel: {fileID: 1642254155}
   divisionValueForGems: 10
 --- !u!1 &693234816
 GameObject:
@@ -2806,7 +2807,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start timer to open chest or unlock  with gems immediately.
+  m_text: Start timer to open chest or unlock with gems immediately.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

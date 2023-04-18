@@ -4,11 +4,13 @@ namespace ChestSystem.BaseChest
 {
     public class ChestUnlockedState : ChestBaseState
     {
+        public override ChestCurrentState State { get; } = ChestCurrentState.UnlockedState;
+
         public override void OnButtonClick(ChestStateManager chest)
         {
             // generate reward and switch to the collected state
             ChestUnlockData chestUnlockData = new ChestUnlockData(chest.chestView.ChestController.ChestModel);
-            ChestService.Instance.OnChestUnlock(chestUnlockData);
+            ChestService.Instance.OnChestCollect?.Invoke(chestUnlockData);
             chest.SwitchState(chest.collectedState);
         }
 

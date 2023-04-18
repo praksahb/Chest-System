@@ -18,14 +18,8 @@ namespace ChestSystem.BaseChest
         {
             float unlockTimeMins = ChestModel.UnlockTimeInMinute;
             int chestIndex = ChestModel.ChestIndex;
-            ChestService.Instance.OpenLockedScreenPanel?.Invoke(unlockTimeMins, chestIndex);
-        }
-
-        public void ButtonClickedUnlockingState()
-        {
-            float unlockTimeMins = ChestModel.UnlockTimeInMinute;
-            int chestIndex = ChestModel.ChestIndex;
-            ChestService.Instance.OpenLockedScreenPanelInUnlockingState?.Invoke(unlockTimeMins, chestIndex);
+            ChestCurrentState chestCurrentState = ChestView.chestStateManager.CurrentState.State;
+            ChestService.Instance.OpenLockedScreenPanel?.Invoke(unlockTimeMins, chestIndex, chestCurrentState);
         }
 
         public void StartTimer()
