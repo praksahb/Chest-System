@@ -13,7 +13,6 @@ namespace ChestSystem.BaseChest
 
         public void OnEnterState(ChestStateManager chest)
         {
-            Debug.Log("The chest has been instantiated in locked state");
         }
     }
 }

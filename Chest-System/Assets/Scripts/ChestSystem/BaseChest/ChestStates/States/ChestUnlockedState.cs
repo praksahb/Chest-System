@@ -16,7 +16,6 @@ namespace ChestSystem.BaseChest
 
         public void OnEnterState(ChestStateManager chest)
         {
-            Debug.Log("This is the unlocked state now");
         }
     }
 

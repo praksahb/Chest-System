@@ -9,7 +9,6 @@ namespace ChestSystem.ChestSlot
         private ChestSlotController chestSlotController;
         private Queue<ChestController> chestQueue;
 
-
         public ChestSlotsController(GameObject chestSlot, int chestSlotItemsCount, ChestSO chestSO, int chestQueueSize)
         {
             chestSlotController = new ChestSlotController(chestSlot);

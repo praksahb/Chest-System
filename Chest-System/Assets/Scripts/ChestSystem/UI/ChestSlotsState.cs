@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace ChestSystem.UI
 {
+
+    // this could have been in chest View
     public class ChestSlotsState : MonoBehaviour
     {
         private List<TextMeshProUGUI> chestSlotsElements;
