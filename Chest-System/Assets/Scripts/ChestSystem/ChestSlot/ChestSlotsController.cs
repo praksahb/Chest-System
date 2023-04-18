@@ -86,11 +86,10 @@ namespace ChestSystem.ChestSlot
 
         private void DequeueAction(ChestController _chestController)
         {
-            //if first elem then easy peasy
+            //if first elem
             if (chestQueue.Peek() == _chestController)
             {
-                chestQueue.Dequeue();
-                ChestController chestController = chestQueue.Peek();
+                ChestController chestController = chestQueue.Dequeue();
                 if (chestController != null)
                 {
                     chestController.StartTimer();

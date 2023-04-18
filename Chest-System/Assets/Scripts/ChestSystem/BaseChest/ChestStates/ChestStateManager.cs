@@ -6,7 +6,7 @@ namespace ChestSystem.BaseChest
     public class ChestStateManager : MonoBehaviour
     {
         public ChestView chestView { get; private set; }
-        public ChestBaseState CurrentState { get; private set; }
+        public IChestBaseState CurrentState { get; private set; }
         private Button chestButton;
 
         public ChestLockedState lockedState = new ChestLockedState();
@@ -25,7 +25,7 @@ namespace ChestSystem.BaseChest
             chestButton.onClick.AddListener(OnButtonClicked);
         }
 
-        public void SwitchState(ChestBaseState state)
+        public void SwitchState(IChestBaseState state)
         {
             CurrentState = state;
             state.OnEnterState(this);

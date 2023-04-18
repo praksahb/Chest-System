@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace ChestSystem.BaseChest
 {
-    public class ChestUnlockingState : ChestBaseState
+    public class ChestUnlockingState : IChestBaseState
     {
-        public override ChestCurrentState State { get; } = ChestCurrentState.UnlockingState;
+        public ChestCurrentState State { get; } = ChestCurrentState.UnlockingState;
 
-        public override void OnButtonClick(ChestStateManager chest)
+        public void OnButtonClick(ChestStateManager chest)
         {
             chest.chestView.ChestController.ButtonClicked();
         }
 
-        public override void OnEnterState(ChestStateManager chest)
+        public void OnEnterState(ChestStateManager chest)
         {
 
         }

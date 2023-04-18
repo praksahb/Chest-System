@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace ChestSystem.BaseChest
 {
-    public class ChestUnlockedState : ChestBaseState
+    public class ChestUnlockedState : IChestBaseState
     {
-        public override ChestCurrentState State { get; } = ChestCurrentState.UnlockedState;
+        public ChestCurrentState State { get; } = ChestCurrentState.UnlockedState;
 
-        public override void OnButtonClick(ChestStateManager chest)
+        public void OnButtonClick(ChestStateManager chest)
         {
             // generate reward
             ChestUnlockData chestUnlockData = new ChestUnlockData(chest.chestView.ChestController.ChestModel);
@@ -14,7 +14,7 @@ namespace ChestSystem.BaseChest
             ChestService.Instance.OnChestCollect?.Invoke(chestUnlockData);
         }
 
-        public override void OnEnterState(ChestStateManager chest)
+        public void OnEnterState(ChestStateManager chest)
         {
             Debug.Log("This is the unlocked state now");
         }
