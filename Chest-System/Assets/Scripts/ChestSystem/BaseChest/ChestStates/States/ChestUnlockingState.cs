@@ -5,14 +5,16 @@ namespace ChestSystem.BaseChest
 {
     public class ChestUnlockingState : ChestBaseState
     {
+        public override ChestCurrentState State { get; } = ChestCurrentState.UnlockingState;
+
         public override void OnButtonClick(ChestStateManager chest)
         {
-            chest.chestView.ChestController.ButtonClickedUnlockingState();
+            chest.chestView.ChestController.ButtonClicked();
         }
 
         public override void OnEnterState(ChestStateManager chest)
         {
-            Debug.Log("timer will start now.");
+
         }
 
         public IEnumerator UnlockCoroutine(ChestStateManager chest)
@@ -28,7 +30,7 @@ namespace ChestSystem.BaseChest
 
                 yield return waitTime;
             }
-            ChestService.Instance.UnlockChest(chestIndex);
+            ChestService.Instance.UnlockOnTimerEnd?.Invoke(chestIndex);
         }
     }
 }

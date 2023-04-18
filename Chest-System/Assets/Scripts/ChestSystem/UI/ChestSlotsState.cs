@@ -16,14 +16,14 @@ namespace ChestSystem.UI
 
         private void OnEnable()
         {
-            UIManager.Instance.TimerValueChange += UpdateTimerValueInChild;
+            UIManager.Instance.CountdownTimerEvent += UpdateTimerValueInChild;
             UIManager.Instance.ClearText += ClearTextHere;
             UIManager.Instance.SetReadyText += ChangeTextToReady;
         }
 
         private void OnDisable()
         {
-            UIManager.Instance.TimerValueChange -= UpdateTimerValueInChild;
+            UIManager.Instance.CountdownTimerEvent -= UpdateTimerValueInChild;
             UIManager.Instance.ClearText -= ClearTextHere;
             UIManager.Instance.SetReadyText -= ChangeTextToReady;
         }

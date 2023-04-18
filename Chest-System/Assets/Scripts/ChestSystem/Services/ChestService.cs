@@ -7,6 +7,15 @@ using ChestSystem.UI;
 
 namespace ChestSystem
 {
+    public enum ChestCurrentState
+    {
+        None,
+        LockedState,
+        UnlockingState,
+        UnlockedState,
+        EnqueuedState,
+    }
+
     public class ChestService : GenericMonoSingleton<ChestService>
     {
         [SerializeField] private GameObject chestSlot;
@@ -24,40 +33,57 @@ namespace ChestSystem
         }
 
         private ChestSlotsController chestSlotsController;
+
+        private void OnEnable()
+        {
+            OnChestCollect += CollectChestRewards;
+        }
         private void Start()
         {
             chestSlotsController = new ChestSlotsController(chestSlot, chestSlotMaxCount, chestSO, chestQueueSize);
             UIManager.Instance.OnUnlockImmediateClick += UnlockChest;
+            UnlockOnTimerEnd += UnlockChest;
             UIManager.Instance.StartTimerClickEvent += QueueChestForUnlocking;
+        }
+
+        private void OnDisable()
+        {
+            OnChestCollect -= CollectChestRewards;
         }
 
         private void OnDestroy()
         {
             UIManager.Instance.OnUnlockImmediateClick -= UnlockChest;
+            UnlockOnTimerEnd -= UnlockChest;
             UIManager.Instance.StartTimerClickEvent -= QueueChestForUnlocking;
         }
 
         //event handler for ChestModel.UnlockTimeInSecond
+
         public void CountdownTimer(float unlockTime, int chestIndex)
         {
-            UIManager.Instance.UpdateTimeRemaining(unlockTime, chestIndex);
+            UIManager.Instance.CountdownTimerEvent?.Invoke(unlockTime, chestIndex);
         }
 
         //event handler for button click to start timer
         private void QueueChestForUnlocking(int chestIndex)
         {
-            if (chestQueueSize == chestSlotsController.GetQueueCount())
+            if (chestQueueSize > chestSlotsController.GetQueueCount())
+            {
+                chestSlotsController.QueueChest(chestIndex);
+            }
+            else
             {
                 Debug.Log("Queue is full.");
-                return;
+                UIManager.Instance.ShowQueueFullPanel();
             }
-
-            chestSlotsController.QueueChest(chestIndex);
         }
 
         //event handler for button click to unlock immediately and
         //public method to handle chest finishing countdown timer
-        public void UnlockChest(int chestIndex)
+
+        public Action<int> UnlockOnTimerEnd;
+        private void UnlockChest(int chestIndex)
         {
             chestSlotsController.UnlockChest(chestIndex);
             UIManager.Instance.SetReadyText?.Invoke(chestIndex);
@@ -92,8 +118,6 @@ namespace ChestSystem
             }
         }
 
-
-
         public Action NoEmptySlots;
 
         private void OnAddChestButtonClick()
@@ -101,13 +125,12 @@ namespace ChestSystem
             chestSlotsController.CreateRandomChest(chestSO);
         }
 
-        // called inside locked state when button is clicked
-        public Action<float, int> OpenLockedScreenPanel;
-        // called inside unlocking state when button is clicked
-        public Action<float, int> OpenLockedScreenPanelInUnlockingState;
+        // invoked when chest is clicked in locked and unlocking state
+        public Action<float, int, ChestCurrentState> OpenLockedScreenPanel;
 
 
-        public void OnChestUnlock(ChestUnlockData chestUnlockData)
+        public Action<ChestUnlockData> OnChestCollect;
+        private void CollectChestRewards(ChestUnlockData chestUnlockData)
         {
             int coins = chestUnlockData.Coins;
             int gems = chestUnlockData.Gems;
@@ -115,7 +138,7 @@ namespace ChestSystem
 
             // pass coins and gems value to the reward panel in the UI manager.
             // can use public function or action invoke and subscribed in ui manager to pass the coin and gems value
-            UIManager.Instance.ShowRewardPanel(coins, gems);
+            UIManager.Instance.GetRewardValues?.Invoke(coins, gems);
             UIManager.Instance.ClearText?.Invoke(chestIndex);
 
             // increase coin and gems value in chestSlotService either here or later in the ui manager upon closing the reward panel
