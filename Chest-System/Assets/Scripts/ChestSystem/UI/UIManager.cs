@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,42 +34,45 @@ namespace ChestSystem.UI
 
         private void OnEnable()
         {
-            EnableChild(closePanel);
-            OnQueueFull += ShowQueueFullPanel;
+            // keep the close button enabled at the start. parent is still inactive so it wont appear
+            closePanel.SetActive(true);
+            closePanelButton.onClick.AddListener(CloseParentPanel);
             CloseAllPanel += CloseParentPanel;
+            ChestService.Instance.OpenLockedScreenPanel += ShowLockedChestPanel;
+            ChestService.Instance.NoEmptySlots += ShowSlotFullPanel;
             InsufficientGems += ShowGemNotEnoughPanel;
+            OnQueueFull += ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange += ChangeCoinValue;
             ChestService.Instance.OnGemChange += ChangeGemValue;
-            ChestService.Instance.NoEmptySlots += ShowSlotFullPanel;
-            ChestService.Instance.OpenLockedScreenPanel += ShowLockedChestPanel;
             GetRewardValues += ShowRewardPanel;
-            closePanelButton.onClick.AddListener(CloseParentPanel);
         }
         private void OnDisable()
         {
-            OnQueueFull -= ShowQueueFullPanel;
+            closePanelButton.onClick.RemoveListener(CloseParentPanel);
             CloseAllPanel -= CloseParentPanel;
+            ChestService.Instance.OpenLockedScreenPanel -= ShowLockedChestPanel;
+            ChestService.Instance.NoEmptySlots -= ShowSlotFullPanel;
             InsufficientGems -= ShowGemNotEnoughPanel;
+            OnQueueFull -= ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange -= ChangeCoinValue;
             ChestService.Instance.OnGemChange -= ChangeGemValue;
-            ChestService.Instance.NoEmptySlots -= ShowSlotFullPanel;
-            ChestService.Instance.OpenLockedScreenPanel -= ShowLockedChestPanel;
             GetRewardValues -= ShowRewardPanel;
-            closePanelButton.onClick.RemoveListener(CloseParentPanel);
         }
 
+        // Actions handler for changing coin value of current user 
         private void ChangeCoinValue()
         {
             int coins = ChestService.Instance.Coins;
             coinCount.SetText("Coins: {0}", coins);
         }
-
+        // Actions handler for changing gem value of current user
         private void ChangeGemValue()
         {
             int gems = ChestService.Instance.Gems;
             gemCount.SetText("Coins: {0}", gems);
         }
 
+        // can be called whenever closing any panel except closing the close button which will be needed in all panels
         private void DisableAllChildrenExcept(GameObject parentObj, GameObject childToKeepActive)
         {
             foreach (Transform child in parentObj.transform)
@@ -80,11 +84,6 @@ namespace ChestSystem.UI
             }
         }
 
-        private void EnableChild(GameObject child)
-        {
-            child.SetActive(true);
-        }
-
         private void ShowSlotFullPanel()
         {
             // first close prev panel if any
@@ -93,6 +92,8 @@ namespace ChestSystem.UI
             slotFullPanel.gameObject.SetActive(true);
         }
 
+
+        // chestService invokes a event which is handled by below function which will again invoke below action which will be handled in lockedChestPanel upon enabling
         public Action<float, int, ChestCurrentState> ChestClickedUIEvent;
         private void ShowLockedChestPanel(float unlockTimeInMinutes, int chestIndex, ChestCurrentState currentState)
         {
@@ -105,7 +106,10 @@ namespace ChestSystem.UI
 
         public Action<int> SetReadyText;
         public Action<int> ClearText;
+
+        // invoked in chestService, subscribed to here, eventHandler - ShowRewardPanel
         public Action<int, int> GetRewardValues;
+        // which invokes SendRewardvalues, handled in rewardPanel.cs
         public Action<int, int> SendRewardValues;
 
         private void ShowRewardPanel(int coins, int gems)
@@ -116,7 +120,9 @@ namespace ChestSystem.UI
             SendRewardValues?.Invoke(coins, gems);
         }
 
+        // invoked in LockedChestPanel,
         public Action InsufficientGems;
+        // handler function
         private void ShowGemNotEnoughPanel()
         {
             CloseParentPanel();
@@ -124,7 +130,9 @@ namespace ChestSystem.UI
             gemNotEnoughPanel.gameObject.SetActive(true);
         }
 
+        // invoked in chestService if queue is full
         public Action OnQueueFull;
+        //  handler function
         private async void ShowQueueFullPanel()
         {
             await Task.Delay(1);
@@ -132,13 +140,17 @@ namespace ChestSystem.UI
             queueFullPanel.gameObject.SetActive(true);
         }
 
+        // subscribed in chestService, Invoked in LockedChestPanel
         public Action<int> OnUnlockImmediateClick;
         public Action<int> StartTimerClickEvent;
 
+        // subscribed in ChestSlotsState.cs - displays timer and other text displaying chest current state
+        // invoked in chestService, inside chestService's event handler.
         public Action<float, int> CountdownTimerEvent;
 
-        public Action CloseAllPanel;
 
+        // subscribed here, invoked in lockedChestPanel, to close the panel after a button click
+        public Action CloseAllPanel;
         private void CloseParentPanel()
         {
             if (parentPanel.activeInHierarchy == true)

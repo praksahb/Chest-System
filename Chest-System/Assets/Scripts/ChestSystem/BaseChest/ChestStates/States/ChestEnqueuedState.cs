@@ -4,16 +4,16 @@ namespace ChestSystem.BaseChest
 {
 
     // might not be requiring  this state afterall
-    public class ChestEnqueuedState : ChestBaseState
+    public class ChestEnqueuedState : IChestBaseState
     {
-        public override ChestCurrentState State { get => ChestCurrentState.EnqueuedState; }
+        public ChestCurrentState State { get => ChestCurrentState.EnqueuedState; }
 
-        public override void OnButtonClick(ChestStateManager chest)
+        public void OnButtonClick(ChestStateManager chest)
         {
             chest.chestView.ChestController.ButtonClicked();
         }
 
-        public override void OnEnterState(ChestStateManager chest)
+        public void OnEnterState(ChestStateManager chest)
         {
 
         }
