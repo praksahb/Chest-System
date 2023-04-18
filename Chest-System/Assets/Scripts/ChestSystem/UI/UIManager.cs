@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,9 +34,9 @@ namespace ChestSystem.UI
         private void OnEnable()
         {
             EnableChild(closePanel);
+            OnQueueFull += ShowQueueFullPanel;
             CloseAllPanel += CloseParentPanel;
             InsufficientGems += ShowGemNotEnoughPanel;
-            OnQueueFull += ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange += ChangeCoinValue;
             ChestService.Instance.OnGemChange += ChangeGemValue;
             ChestService.Instance.NoEmptySlots += ShowSlotFullPanel;
@@ -44,9 +46,9 @@ namespace ChestSystem.UI
         }
         private void OnDisable()
         {
+            OnQueueFull -= ShowQueueFullPanel;
             CloseAllPanel -= CloseParentPanel;
             InsufficientGems -= ShowGemNotEnoughPanel;
-            OnQueueFull -= ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange -= ChangeCoinValue;
             ChestService.Instance.OnGemChange -= ChangeGemValue;
             ChestService.Instance.NoEmptySlots -= ShowSlotFullPanel;
@@ -123,13 +125,11 @@ namespace ChestSystem.UI
         }
 
         public Action OnQueueFull;
-
-        public void ShowQueueFullPanel()
+        private async void ShowQueueFullPanel()
         {
-            CloseParentPanel();
+            await Task.Delay(1);
             parentPanel.SetActive(true);
             queueFullPanel.gameObject.SetActive(true);
-            Debug.Log("chk1");
         }
 
         public Action<int> OnUnlockImmediateClick;
