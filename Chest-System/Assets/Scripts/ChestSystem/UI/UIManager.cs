@@ -14,6 +14,7 @@ namespace ChestSystem.UI
         [SerializeField] private GameObject closePanel;
         [SerializeField] private RectTransform gemNotEnoughPanel;
 
+        public GameObject queueFullPanel;
         [SerializeField] private TextMeshProUGUI coinCount;
         [SerializeField] private TextMeshProUGUI gemCount;
 
@@ -33,6 +34,7 @@ namespace ChestSystem.UI
             EnableChild(closePanel);
             CloseAllPanel += CloseParentPanel;
             InsufficientGems += ShowGemNotEnoughPanel;
+            OnQueueFull += ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange += ChangeCoinValue;
             ChestService.Instance.OnGemChange += ChangeGemValue;
             ChestService.Instance.NoEmptySlots += ShowSlotFullPanel;
@@ -44,6 +46,7 @@ namespace ChestSystem.UI
         {
             CloseAllPanel -= CloseParentPanel;
             InsufficientGems -= ShowGemNotEnoughPanel;
+            OnQueueFull -= ShowQueueFullPanel;
             ChestService.Instance.OnCoinChange -= ChangeCoinValue;
             ChestService.Instance.OnGemChange -= ChangeGemValue;
             ChestService.Instance.NoEmptySlots -= ShowSlotFullPanel;
@@ -117,6 +120,16 @@ namespace ChestSystem.UI
             CloseParentPanel();
             parentPanel.SetActive(true);
             gemNotEnoughPanel.gameObject.SetActive(true);
+        }
+
+        public Action OnQueueFull;
+
+        public void ShowQueueFullPanel()
+        {
+            //CloseParentPanel();
+            parentPanel.SetActive(true);
+            //queueFullPanel.gameObject.SetActive(true);
+            Debug.Log("chk1");
         }
 
         public Action<int> OnUnlockImmediateClick;

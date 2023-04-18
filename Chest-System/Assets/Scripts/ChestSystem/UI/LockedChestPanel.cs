@@ -44,7 +44,8 @@ namespace ChestSystem.UI
                 startTimerButton.onClick.AddListener(LaunchStartTimerEvent);
                 baseTextLockedPanel.SetText("Start timer to open chest or unlock with gems immediately.");
             }
-            if (currentState == ChestCurrentState.UnlockingState)
+            else
+            //if (currentState == ChestCurrentState.UnlockingState || currentState == ChestCurrentState.EnqueuedState)
             {
                 startTimerButton.gameObject.SetActive(false);
                 baseTextLockedPanel.SetText("Unlock with gems immediately.");

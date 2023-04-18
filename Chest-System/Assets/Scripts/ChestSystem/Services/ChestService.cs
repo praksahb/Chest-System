@@ -13,8 +13,8 @@ namespace ChestSystem
         LockedState,
         UnlockingState,
         UnlockedState,
+        EnqueuedState,
     }
-
 
     public class ChestService : GenericMonoSingleton<ChestService>
     {
@@ -68,13 +68,15 @@ namespace ChestSystem
         //event handler for button click to start timer
         private void QueueChestForUnlocking(int chestIndex)
         {
-            if (chestQueueSize == chestSlotsController.GetQueueCount())
+            if (chestQueueSize > chestSlotsController.GetQueueCount())
+            {
+                chestSlotsController.QueueChest(chestIndex);
+            }
+            else
             {
                 Debug.Log("Queue is full.");
-                return;
+                UIManager.Instance.ShowQueueFullPanel();
             }
-
-            chestSlotsController.QueueChest(chestIndex);
         }
 
         //event handler for button click to unlock immediately and

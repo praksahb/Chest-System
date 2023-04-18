@@ -28,6 +28,11 @@ namespace ChestSystem.BaseChest
             ChestModel.TimeValueChange += ChestService.Instance.CountdownTimer;
         }
 
+        public void SwitchToEnqueuedState()
+        {
+            ChestView.chestStateManager.SwitchState(ChestView.chestStateManager.enqueuedState);
+        }
+
         public void UnlockChest()
         {
             if (ChestView.chestStateManager.CurrentState is ChestUnlockingState)

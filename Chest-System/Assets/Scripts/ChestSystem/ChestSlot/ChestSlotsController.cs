@@ -81,7 +81,7 @@ namespace ChestSystem.ChestSlot
             }
 
             chestQueue.Enqueue(chestController);
-            Debug.Log("q size: " + chestQueue.Count);
+            chestController.SwitchToEnqueuedState();
         }
 
         private void DequeueAction(ChestController _chestController)

@@ -8,10 +8,10 @@ namespace ChestSystem.BaseChest
 
         public override void OnButtonClick(ChestStateManager chest)
         {
-            // generate reward and switch to the collected state
+            // generate reward
             ChestUnlockData chestUnlockData = new ChestUnlockData(chest.chestView.ChestController.ChestModel);
+            // send to chestService
             ChestService.Instance.OnChestCollect?.Invoke(chestUnlockData);
-            chest.SwitchState(chest.collectedState);
         }
 
         public override void OnEnterState(ChestStateManager chest)
