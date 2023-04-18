@@ -2568,7 +2568,7 @@ MonoBehaviour:
   rewardPanel: {fileID: 195583482}
   closePanel: {fileID: 190968158}
   gemNotEnoughPanel: {fileID: 1089943839}
-  queueFullPanel: {fileID: 1381566768}
+  queueFullPanel: {fileID: 813489461}
   coinCount: {fileID: 1279326565}
   gemCount: {fileID: 2039533943}
 --- !u!4 &1381566770
