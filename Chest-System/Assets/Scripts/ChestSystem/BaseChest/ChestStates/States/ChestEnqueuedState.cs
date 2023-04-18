@@ -15,7 +15,7 @@ namespace ChestSystem.BaseChest
 
         public override void OnEnterState(ChestStateManager chest)
         {
-            Debug.Log("end of state now.");
+
         }
     }
 }

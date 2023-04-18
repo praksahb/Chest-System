@@ -13,8 +13,8 @@ namespace ChestSystem.UI
         [SerializeField] private RewardPanel rewardPanel;
         [SerializeField] private GameObject closePanel;
         [SerializeField] private RectTransform gemNotEnoughPanel;
+        [SerializeField] private RectTransform queueFullPanel;
 
-        public GameObject queueFullPanel;
         [SerializeField] private TextMeshProUGUI coinCount;
         [SerializeField] private TextMeshProUGUI gemCount;
 
@@ -126,9 +126,9 @@ namespace ChestSystem.UI
 
         public void ShowQueueFullPanel()
         {
-            //CloseParentPanel();
+            CloseParentPanel();
             parentPanel.SetActive(true);
-            //queueFullPanel.gameObject.SetActive(true);
+            queueFullPanel.gameObject.SetActive(true);
             Debug.Log("chk1");
         }
 
